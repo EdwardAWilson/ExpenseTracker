@@ -160,3 +160,8 @@ void print(FILE* fp, char* month)
 	printf("\n");
 	rewind(fp);	
 }
+
+void removeEntry(FILE* fp, char* fileName)
+{
+	printf("\nWhich month would you like to remove?");
+}
