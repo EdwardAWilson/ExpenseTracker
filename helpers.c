@@ -1,4 +1,7 @@
-#include "trackerFunctions.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "helpers.h"
 
 char* monthNumToString(int num)
 {
