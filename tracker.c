@@ -93,7 +93,7 @@ int main()
 
 		if (strcmp(userInput, "print\n") == 0)
 		{
-			print(fp);
+			print(fp, month);
 		}
 
 		printf("$ ");
