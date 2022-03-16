@@ -1,5 +1,5 @@
 CC = gcc
-OBJECTS = tracker.o
+OBJECTS = tracker.o trackerFunctions.o
 .PHONY: clean
 
 tracker.exe: $(OBJECTS)
