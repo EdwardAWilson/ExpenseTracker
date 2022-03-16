@@ -105,6 +105,11 @@ void ordinalNumber(int num, char* output)
 	{
 		ordinalEnding = "th";
 	}
+	
+	if (num == 11 || num == 12 || num == 13)
+	{
+		ordinalEnding = "th";
+	}
 
 	sprintf(output, "%d%s", num, ordinalEnding);
 }
