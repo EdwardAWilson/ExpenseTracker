@@ -70,28 +70,23 @@ int main()
 		{
 			balance(fp, buff);	
 		}
-
-		if (strcmp(userInput, "input expense\n") == 0)
+		else if (strcmp(userInput, "input expense\n") == 0)
 		{
 			inputExpense(fileName, today);
 		}
-
-		if (strcmp(userInput, "input income\n") == 0)
+		else if (strcmp(userInput, "input income\n") == 0)
 		{
 			inputIncome(fileName, today);
 		}
-
-		if (strcmp(userInput, "input expense previous day\n") == 0)
+		else if (strcmp(userInput, "input expense previous day\n") == 0)
 		{
 			inputExpensePreviousDay(fileName, month, year);
 		}
-
-		if (strcmp(userInput, "input income previous day\n") == 0)
+		else if (strcmp(userInput, "input income previous day\n") == 0)
 		{
 			inputIncomePreviousDay(fileName, month, year);
 		}
-
-		if (strcmp(userInput, "print\n") == 0)
+		else if (strcmp(userInput, "print\n") == 0)
 		{
 			print(fp, month);
 		}
