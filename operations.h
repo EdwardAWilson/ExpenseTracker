@@ -8,5 +8,6 @@ void inputIncome(char*, int);
 void inputExpensePreviousDay(char*, char*, int);
 void inputIncomePreviousDay(char*, char*, int);
 void print(FILE*, char*);
+void removeEntry(FILE*, char*);
 
 #endif

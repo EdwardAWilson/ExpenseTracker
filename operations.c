@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "helpers.h"
+
 void balance(FILE* fp, char* buff)
 {
 	int date = 1;
@@ -123,7 +125,9 @@ void print(FILE* fp, char* month)
 	{
 		if (balanceEntry[i][0] != 0)
 		{
-			printf("%d\t\t\n", i + 1);
+			char ordinal[4];
+			ordinalNumber(i + 1, ordinal);
+			printf("%s\t\t\n", ordinal);
 		}
 
 		for (int j = 0; j <= balanceLength[i]; j++)
@@ -155,4 +159,9 @@ void print(FILE* fp, char* month)
 		
 	printf("\n");
 	rewind(fp);	
+}
+
+void removeEntry(FILE* fp, char* fileName)
+{
+	printf("\nWhich month would you like to remove?");
 }
