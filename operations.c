@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "helpers.h"
 
@@ -35,66 +36,74 @@ void balance(FILE* fp, char* buff)
 	return;
 }
 
-void inputExpense(char* fileName, int day)
-{
-	char userInput[255];
-	printf("\nPlease enter the expense for today: ");
+void inputToday(char* fileName, int day, int expense)
+{	char userInput[255];
+
+	if (expense)
+		printf("\nPlease enter the expense for today: ");
+	else
+		printf("\nPlease enter income for today: ");
+
 	FILE *fw = fopen(fileName, "a");
 
-	fgets(userInput, 255, stdin);
-	double cost = -1 * atof(userInput);
+	if (getUserInput(userInput)) return;
+	double fragment;
+	
+	 if (expense)	
+		fragment = -1 * atof(userInput);
+	 else
+		fragment = atof(userInput);
 
-	fprintf(fw, "%d %.2f\n", day, cost);
-	printf("You have successfully entered $%.2f as an expense for today\n\n", -1 * cost);
+	fprintf(fw, "%d %.2f\n", day, fragment);
+
+	if (expense)
+		printf("You have successfully entered $%.2f as an expense for today\n\n", -1 * fragment);
+	else
+		printf("You have successfully entered $%.2f as income for today\n\n", fragment);
 
 	fclose(fw);
 }
 
-void inputIncome(char* fileName, int day)
+void inputSelectDay(char* fileName, char* month, int year, int expense)
 {
 	char userInput[255];
-	printf("\nPlease enter income for today: ");
+	int check = 0;
+	int selectedDay;
+
+	while (!check)
+	{
+		if (expense)
+			printf("\nPlease enter which day to add an expense to: ");
+		else
+			printf("\nPlease enter which day to add income to: ");
+
+		if (getUserInput(userInput)) return;
+
+		selectedDay = atoi(userInput);
+		check = checkValidDay(selectedDay, monthStringToNum(month));
+	}
+
+	if (expense)
+		printf("Please enter an expense for %s %d %d: ", month, selectedDay, year);
+	else
+		printf("Please enter income for %s %d %d: ", month, selectedDay, year);
+
+	if (getUserInput(userInput)) return;
+
 	FILE *fw = fopen(fileName, "a");
+	double fragment;
 
-	fgets(userInput, 255, stdin);
-	double income = atof(userInput);
+	if (expense)
+		fragment = -1 * atof(userInput);
+	else
+		fragment = atof(userInput);
 
-	fprintf(fw, "%d %.2f\n", day, income);
-	printf("You have successfully entered $%.2f as income for today\n\n", income);
+	fprintf(fw, "%d %.2f\n", selectedDay, fragment);
 
-	fclose(fw);
-}
-
-void inputExpensePreviousDay(char* fileName, char* month, int year)
-{
-	char userInput[255];
-	printf("\nPlease enter which day to add an expense to: ");
-	fgets(userInput, 255, stdin);
-	int selectedDay = atoi(userInput);
-
-	printf("Please enter income for %s %d %d: ", month, selectedDay, year);
-	FILE *fw = fopen(fileName, "a");
-	fgets(userInput, 255, stdin);
-	double cost = -1 * atof(userInput);
-	fprintf(fw, "%d %.2f\n", selectedDay, cost);
-	printf("You have successfully entered $%.2f as an expense for %s %d %d\n\n", -1 * cost, month, selectedDay, year);
-
-	fclose(fw);
-}
-
-void inputIncomePreviousDay(char* fileName, char* month, int year)
-{
-	char userInput[255];
-	printf("\nPlease enter which day to add income to: ");
-	fgets(userInput, 255, stdin);
-	int selectedDay = atoi(userInput);
-
-	printf("Please enter income for %s %d %d: ", month, selectedDay, year);
-	FILE *fw = fopen(fileName, "a");
-	fgets(userInput, 255, stdin);
-	double income = atof(userInput);
-	fprintf(fw, "%d %.2f\n", selectedDay, income);
-	printf("You have successfully entered $%.2f as income for %s %d %d\n\n", income, month, selectedDay, year);
+	if (expense)
+		printf("You have successfully entered $%.2f as an expense for %s %d %d\n\n", -1 * fragment, month, selectedDay, year);
+	else
+		printf("You have successfully entered $%.2f as income for %s %d %d\n\n", fragment, month, selectedDay, year);
 
 	fclose(fw);
 }
@@ -159,9 +168,4 @@ void print(FILE* fp, char* month)
 		
 	printf("\n");
 	rewind(fp);	
-}
-
-void removeEntry(FILE* fp, char* fileName)
-{
-	printf("\nWhich month would you like to remove?");
 }

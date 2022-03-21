@@ -113,3 +113,64 @@ void ordinalNumber(int num, char* output)
 
 	sprintf(output, "%d%s", num, ordinalEnding);
 }
+
+int isValidDay(int day, int month)
+{
+	if (day <= 0)
+	{
+		return 0;
+	}
+
+	if (month == 2)
+	{
+		if (day < 29)
+		{
+			return 1;
+		}
+		return 0;
+	}
+	if (month == 4 || month == 6 || month == 9 || month == 11)
+	{
+		if (day < 31)
+		{
+			return 1;
+		}
+		return 0;
+	}
+	else
+	{
+		if (day < 32)
+		{
+			return 1;
+		}
+		return 0;
+	}
+}
+
+int checkValidDay(int day, int month)
+{
+	if (isValidDay(day, month))
+	{
+		return 1;
+	}
+	else
+	{
+		printf("Please enter a valid day for the selected month\n");
+		return 0;
+	}
+}
+
+int getUserInput(char* userInput)
+{
+	fgets(userInput, 255, stdin);
+
+	if (strcmp(userInput, "exit\n") == 0)
+	{
+		printf("\n");
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
