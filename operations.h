@@ -6,6 +6,5 @@ void balance(FILE*, char*);
 void inputToday(char*, int, int);
 void inputSelectDay(char*, char*, int, int);
 void print(FILE*, char*);
-void removeEntry(FILE*, char*);
 
 #endif

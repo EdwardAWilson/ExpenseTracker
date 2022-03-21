@@ -90,10 +90,6 @@ int main()
 		{
 			print(fp, month);
 		}
-		else if (strcmp(userInput, "delete\n") == 0)
-		{
-			removeEntry(fp, fileName);
-		}
 
 		printf("$ ");
 		fgets(userInput, 255, stdin);
