@@ -68,9 +68,16 @@ void inputIncome(char* fileName, int day)
 void inputExpensePreviousDay(char* fileName, char* month, int year)
 {
 	char userInput[255];
-	printf("\nPlease enter which day to add an expense to: ");
-	fgets(userInput, 255, stdin);
-	int selectedDay = atoi(userInput);
+	int check = 0;
+	int selectedDay;
+
+	while (!check)
+	{
+		printf("\nPlease enter which day to add an expense to: ");
+		fgets(userInput, 255, stdin);
+		selectedDay = atoi(userInput);
+		check = checkValidDay(selectedDay, monthStringToNum(month));
+	}
 
 	printf("Please enter income for %s %d %d: ", month, selectedDay, year);
 	FILE *fw = fopen(fileName, "a");
@@ -85,9 +92,16 @@ void inputExpensePreviousDay(char* fileName, char* month, int year)
 void inputIncomePreviousDay(char* fileName, char* month, int year)
 {
 	char userInput[255];
-	printf("\nPlease enter which day to add income to: ");
-	fgets(userInput, 255, stdin);
-	int selectedDay = atoi(userInput);
+	int check = 0;
+	int selectedDay;
+
+	while (!check)
+	{
+		printf("\nPlease enter which day to add an expense to: ");
+		fgets(userInput, 255, stdin);
+		selectedDay = atoi(userInput);
+		check = checkValidDay(selectedDay, monthStringToNum(month));
+	}
 
 	printf("Please enter income for %s %d %d: ", month, selectedDay, year);
 	FILE *fw = fopen(fileName, "a");

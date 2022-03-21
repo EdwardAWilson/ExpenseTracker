@@ -78,11 +78,11 @@ int main()
 		{
 			inputIncome(fileName, today);
 		}
-		else if (strcmp(userInput, "input expense previous day\n") == 0)
+		else if (strcmp(userInput, "input expense select day\n") == 0)
 		{
 			inputExpensePreviousDay(fileName, month, year);
 		}
-		else if (strcmp(userInput, "input income previous day\n") == 0)
+		else if (strcmp(userInput, "input income select day\n") == 0)
 		{
 			inputIncomePreviousDay(fileName, month, year);
 		}
