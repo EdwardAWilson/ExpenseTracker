@@ -72,19 +72,19 @@ int main()
 		}
 		else if (strcmp(userInput, "input expense\n") == 0)
 		{
-			inputExpense(fileName, today);
+			inputToday(fileName, today, 1);
 		}
 		else if (strcmp(userInput, "input income\n") == 0)
 		{
-			inputIncome(fileName, today);
+			inputToday(fileName, today, 0);
 		}
 		else if (strcmp(userInput, "input expense select day\n") == 0)
 		{
-			inputExpensePreviousDay(fileName, month, year);
+			inputSelectDay(fileName, month, year, 1);
 		}
 		else if (strcmp(userInput, "input income select day\n") == 0)
 		{
-			inputIncomePreviousDay(fileName, month, year);
+			inputSelectDay(fileName, month, year, 0);
 		}
 		else if (strcmp(userInput, "print\n") == 0)
 		{
