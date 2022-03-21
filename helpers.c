@@ -159,3 +159,18 @@ int checkValidDay(int day, int month)
 		return 0;
 	}
 }
+
+int getUserInput(char* userInput)
+{
+	fgets(userInput, 255, stdin);
+
+	if (strcmp(userInput, "exit\n") == 0)
+	{
+		printf("\n");
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}

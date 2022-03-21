@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "helpers.h"
 
@@ -41,7 +42,7 @@ void inputExpense(char* fileName, int day)
 	printf("\nPlease enter the expense for today: ");
 	FILE *fw = fopen(fileName, "a");
 
-	fgets(userInput, 255, stdin);
+	if (getUserInput(userInput)) return;
 	double cost = -1 * atof(userInput);
 
 	fprintf(fw, "%d %.2f\n", day, cost);
@@ -56,7 +57,7 @@ void inputIncome(char* fileName, int day)
 	printf("\nPlease enter income for today: ");
 	FILE *fw = fopen(fileName, "a");
 
-	fgets(userInput, 255, stdin);
+	if (getUserInput(userInput)) return;
 	double income = atof(userInput);
 
 	fprintf(fw, "%d %.2f\n", day, income);
@@ -74,14 +75,17 @@ void inputExpensePreviousDay(char* fileName, char* month, int year)
 	while (!check)
 	{
 		printf("\nPlease enter which day to add an expense to: ");
-		fgets(userInput, 255, stdin);
+
+		if (getUserInput(userInput)) return;
+
 		selectedDay = atoi(userInput);
 		check = checkValidDay(selectedDay, monthStringToNum(month));
 	}
 
 	printf("Please enter income for %s %d %d: ", month, selectedDay, year);
+	if (getUserInput(userInput)) return;
+
 	FILE *fw = fopen(fileName, "a");
-	fgets(userInput, 255, stdin);
 	double cost = -1 * atof(userInput);
 	fprintf(fw, "%d %.2f\n", selectedDay, cost);
 	printf("You have successfully entered $%.2f as an expense for %s %d %d\n\n", -1 * cost, month, selectedDay, year);
@@ -98,14 +102,17 @@ void inputIncomePreviousDay(char* fileName, char* month, int year)
 	while (!check)
 	{
 		printf("\nPlease enter which day to add an expense to: ");
-		fgets(userInput, 255, stdin);
+
+		if (getUserInput(userInput)) return;
+
 		selectedDay = atoi(userInput);
 		check = checkValidDay(selectedDay, monthStringToNum(month));
 	}
 
 	printf("Please enter income for %s %d %d: ", month, selectedDay, year);
+	if (getUserInput(userInput)) return;
+
 	FILE *fw = fopen(fileName, "a");
-	fgets(userInput, 255, stdin);
 	double income = atof(userInput);
 	fprintf(fw, "%d %.2f\n", selectedDay, income);
 	printf("You have successfully entered $%.2f as income for %s %d %d\n\n", income, month, selectedDay, year);

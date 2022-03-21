@@ -7,6 +7,7 @@ int monthStringToNum(char*);
 void ordinalNumber(int, char*);
 int isValidDay(int, int);
 int checkValidDay(int, int);
+int getUserInput(char*);
 
 #endif
 
