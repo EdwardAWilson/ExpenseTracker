@@ -23,7 +23,7 @@ int main()
 	char fileName[255];
 	sprintf(fileName, "Data/%d/%s", year, month);
 
-	FILE *fp = fopen(fileName, "r");
+	FILE *fp = fopen(fileName, "r+");
 
 	if (fp == NULL)
 	{
@@ -88,7 +88,15 @@ int main()
 		}
 		else if (strcmp(userInput, "print\n") == 0)
 		{
-			print(fp, month);
+			print(fp, month, 1);
+		}
+		else if (strcmp(userInput, "delete\n") == 0)
+		{
+			removeEntry(fp, month);
+		}
+		else
+		{
+			printf("\nPlease enter a valid command.\n\n");
 		}
 
 		printf("$ ");
