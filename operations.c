@@ -108,7 +108,7 @@ void inputSelectDay(char* fileName, char* month, int year, int expense)
 	fclose(fw);
 }
 
-void print(FILE* fp, char* month)
+void print(FILE* fp, char* month, int extra)
 {
 	char buff[255];
 	double balanceEntry[31][64] = {0};
@@ -164,13 +164,110 @@ void print(FILE* fp, char* month)
 		}
 	}
 
-	printf("Total\t\t%.2f\t\t%.2f\n", profit, losses);
+	if (extra)
+	{
+		printf("Total\t\t%.2f\t\t%.2f\n", profit, losses);
+	}
 		
 	printf("\n");
 	rewind(fp);	
 }
 
-void removeEntry(FILE* fp, char* fileName)
+void removeEntry(FILE* fp, char* month)
 {
-	printf("\nWhich month would you like to remove?");
+	char userInput[255];
+	char buff[255];
+	int selectedDay;
+	int check1 = 0;
+	int check2 = 0;
+	int pos = 0;
+	double balanceEntry[31][64] = {0};
+	int balanceLength[31];
+	int balancePosition[31][64] = {0};
+	print(fp, month, 0);
+
+	while (fscanf(fp, "%s", buff) != EOF)
+	{
+		int date = atoi(buff);
+		fscanf(fp, "%s", buff);
+		double entry = atof(buff);
+
+		balanceEntry[date - 1][balanceLength[date - 1]] = entry;
+		balancePosition[date - 1][balanceLength[date - 1]++] = pos++;
+	}
+	rewind(fp);
+
+	while (!check1)
+	{
+		while (!check2)
+		{
+			printf("\nPlease enter the day which you would like to delete from: ");
+
+			if (getUserInput(userInput)) return;
+	
+			selectedDay = atoi(userInput);
+			check2 = checkValidDay(selectedDay, monthStringToNum(month));
+		}
+
+		if (balanceLength[selectedDay - 1] == 0)
+		{
+			printf("Please enter a day which has entries associated with it.\n");
+			check2 = 0;
+		}
+		else
+		{
+			check1 = 1;
+			printf("\n");
+			
+			for (int i = 0; i < balanceLength[selectedDay - 1]; i++)
+			{
+				if (balanceEntry[selectedDay - 1][i] < 0)
+					printf("%d:\t\t%.2f\n", i + 1, balanceEntry[selectedDay - 1][i]);	
+				else
+					printf("%d:\t\t %.2f\n", i + 1, balanceEntry[selectedDay - 1][i]);	
+			}
+
+			check2 = 0;
+			int selectedEntry;
+
+			while (!check2)
+			{
+				printf("\nPlease enter the entry you would like to delete: ");
+
+				if (getUserInput(userInput)) return;
+
+				selectedEntry = atoi(userInput);
+				if (selectedEntry > 0 && selectedEntry <= balanceLength[selectedDay - 1])
+				{
+					check2 = 1;
+					int count = 0;
+
+					while (fgets(buff, sizeof buff, fp) != NULL)
+					{
+						if (count++ == balancePosition[selectedDay - 1][selectedEntry - 1] - 1)
+						{
+							for (int i = 0; i < sizeof buff; i++)
+							{
+								if (buff[i] != '\0')
+								{
+									fprintf(fp, " ");
+								}
+								else
+								{
+									break;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					printf("Please choose from the entries associated with the day.\n");
+				}
+			}
+		}	
+	}
+	
+	rewind(fp);
+	printf("\n");
 }
