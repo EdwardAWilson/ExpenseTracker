@@ -261,6 +261,13 @@ void removeEntry(FILE* fp, char* month)
 					{
 						fprintf(fp, " ");
 					}
+
+					double entry = atof(buff);
+
+					if (entry < 0)
+						printf("Successfully deleted entry of -$%.2f\n", -1 * entry);
+					else
+						printf("Successfully deleted entry of $%.2f\n", entry);
 				}
 				else
 				{
