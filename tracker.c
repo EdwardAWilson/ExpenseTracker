@@ -96,7 +96,7 @@ int main()
 		}
 		else
 		{
-			printf("\nPlease enter a valid command\n\n");
+			printf("\nPlease enter a valid command.\n\n");
 		}
 
 		printf("$ ");
