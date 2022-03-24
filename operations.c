@@ -112,10 +112,9 @@ void print(FILE* fp, char* month, int extra)
 {
 	char buff[255];
 	double balanceEntry[31][64] = {0};
-	int balanceLength[31];
+	int balanceLength[31] = {0};
 	double profit = 0;
 	double losses = 0;
-		
 	double balance = 0;
 
 	while (fscanf(fp, "%s", buff) != EOF)
@@ -177,12 +176,12 @@ void removeEntry(FILE* fp, char* month)
 {
 	char userInput[255];
 	char buff[255];
-	int selectedDay;
+	int selectedDay = 0;
 	int check1 = 0;
 	int check2 = 0;
 	int pos = 0;
 	double balanceEntry[31][64] = {0};
-	int balanceLength[31];
+	int balanceLength[31] = {0};
 	int balancePosition[31][64] = {0};
 	print(fp, month, 0);
 
@@ -228,7 +227,7 @@ void removeEntry(FILE* fp, char* month)
 			}
 
 			check2 = 0;
-			int selectedEntry;
+			int selectedEntry = 0;
 
 			while (!check2)
 			{
@@ -241,23 +240,26 @@ void removeEntry(FILE* fp, char* month)
 				{
 					check2 = 1;
 					int count = 0;
+					int length = 0;
+					unsigned int curpos = 0;
 
-					while (fgets(buff, sizeof buff, fp) != NULL)
+					while (count++ != balancePosition[selectedDay - 1][selectedEntry - 1])
 					{
-						if (count++ == balancePosition[selectedDay - 1][selectedEntry - 1] - 1)
-						{
-							for (int i = 0; i < sizeof buff; i++)
-							{
-								if (buff[i] != '\0')
-								{
-									fprintf(fp, " ");
-								}
-								else
-								{
-									break;
-								}
-							}
-						}
+						fscanf(fp, "%s", buff);
+						fscanf(fp, "%s", buff);
+						curpos = ftell(fp) + 1;
+					}
+
+					fscanf(fp, "%s", buff);
+					length = strlen(buff);
+					fscanf(fp, "%s", buff);
+					length += strlen(buff) + 1;
+
+					fseek(fp, curpos, SEEK_SET);
+
+					for (int i = 0; i < length; i++)
+					{
+						fprintf(fp, " ");
 					}
 				}
 				else
