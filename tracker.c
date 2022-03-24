@@ -90,6 +90,10 @@ int main()
 		{
 			print(fp, month);
 		}
+		else
+		{
+			printf("\nPlease enter a valid command\n\n");
+		}
 
 		printf("$ ");
 		fgets(userInput, 255, stdin);
