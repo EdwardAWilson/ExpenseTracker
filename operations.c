@@ -330,3 +330,73 @@ void setWeeklyExpense()
 
 	fclose(fp);
 }
+
+void balanceWeekly(FILE* fp, char* buff, int today)
+{
+	int date = 1;
+	int entry = 0;
+	int day = today;
+	
+	char fileName[14] = "Data/Settings";
+	char weeklyExpenseString[5] = "";
+	double weeklyExpense = 0;
+
+	FILE *settings = fopen(fileName, "r");
+
+	if (settings == NULL)
+	{
+		printf("\nYou must set the amount you wish to spend per week before using this command. \n\n");
+		return;
+	}
+
+	fscanf(settings, "%s", weeklyExpenseString);
+	weeklyExpense = atof(weeklyExpenseString);
+
+	double balance = weeklyExpense;
+
+	while (day - 1 >= 7)
+	{
+		if (day < 25)
+		{
+			balance += weeklyExpense;
+		}
+
+		day -= 7;
+	}
+
+	double potentialEntry = 0;
+
+	while (fscanf(fp, "%s", buff) != EOF)
+	{
+		if (date)
+		{
+			date = 0;
+			entry = 1;
+		}
+		else if (entry)
+		{
+			potentialEntry = atof(buff);
+			entry = 0;
+		}
+		else
+		{
+			if (!atoi(buff) && potentialEntry < 0)
+			{
+				balance += potentialEntry;
+			}
+			
+			date = 1;
+		}
+	}
+
+	if (balance >= 0)
+	{
+		printf("\nYour current balance with your weekly expenditures for this month is: $%.2f\n\n", balance);
+	}
+	else
+	{
+		printf("\nYour current balance with your weekly expenditures for this month is: -$%.2f\n\n", -1 * balance);
+	}
+
+	rewind(fp);
+}

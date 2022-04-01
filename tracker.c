@@ -106,6 +106,10 @@ int main()
 		{
 			setWeeklyExpense();
 		}
+		else if (strcmp(userInput, "balance weekly\n") == 0)
+		{
+			balanceWeekly(fp, buff, today);
+		}
 		else
 		{
 			printf("\nPlease enter a valid command.\n\n");

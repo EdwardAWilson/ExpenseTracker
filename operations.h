@@ -8,5 +8,6 @@ void inputSelectDay(char*, char*, int, int, int);
 void print(FILE*, char*, int);
 void removeEntry(FILE*, char*);
 void setWeeklyExpense();
+void balanceWeekly(FILE*, char*, int);
 
 #endif
