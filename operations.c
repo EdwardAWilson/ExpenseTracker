@@ -7,6 +7,7 @@
 void balance(FILE* fp, char* buff)
 {
 	int date = 1;
+	int entry = 0;
 	double balance = 0;
 
 	while (fscanf(fp, "%s", buff) != EOF)
@@ -14,10 +15,15 @@ void balance(FILE* fp, char* buff)
 		if (date)
 		{
 			date = 0;
+			entry = 1;
+		}
+		else if (entry)
+		{
+			balance += atof(buff);
+			entry = 0;
 		}
 		else
 		{
-			balance += atof(buff);
 			date = 1;
 		}
 	}
@@ -36,7 +42,7 @@ void balance(FILE* fp, char* buff)
 	return;
 }
 
-void inputToday(char* fileName, int day, int expense)
+void inputToday(char* fileName, int day, int expense, int marker)
 {	char userInput[255];
 
 	if (expense)
@@ -54,7 +60,7 @@ void inputToday(char* fileName, int day, int expense)
 	 else
 		fragment = atof(userInput);
 
-	fprintf(fw, "%d %.2f\n", day, fragment);
+	fprintf(fw, "%d %.2f %d\n", day, fragment, marker);
 
 	if (expense)
 		printf("You have successfully entered $%.2f as an expense for today\n\n", -1 * fragment);
@@ -64,7 +70,7 @@ void inputToday(char* fileName, int day, int expense)
 	fclose(fw);
 }
 
-void inputSelectDay(char* fileName, char* month, int year, int expense)
+void inputSelectDay(char* fileName, char* month, int year, int expense, int marker)
 {
 	char userInput[255];
 	int check = 0;
@@ -98,7 +104,7 @@ void inputSelectDay(char* fileName, char* month, int year, int expense)
 	else
 		fragment = atof(userInput);
 
-	fprintf(fw, "%d %.2f\n", selectedDay, fragment);
+	fprintf(fw, "%d %.2f %d\n", selectedDay, fragment, marker);
 
 	if (expense)
 		printf("You have successfully entered $%.2f as an expense for %s %d %d\n\n", -1 * fragment, month, selectedDay, year);
@@ -123,7 +129,8 @@ void print(FILE* fp, char* month, int extra)
 		fscanf(fp, "%s", buff);
 		double entry = atof(buff);
 
-		balanceEntry[date - 1][balanceLength[date - 1]++] = entry;		
+		balanceEntry[date - 1][balanceLength[date - 1]++] = entry;	
+		fscanf(fp, "%s", buff);	
 	}
 
 	printf("\n%s\t\tIncome\t\tExpenses\n", month);
@@ -193,6 +200,7 @@ void removeEntry(FILE* fp, char* month)
 
 		balanceEntry[date - 1][balanceLength[date - 1]] = entry;
 		balancePosition[date - 1][balanceLength[date - 1]++] = pos++;
+		fscanf(fp, "%s", buff);
 	}
 	rewind(fp);
 
@@ -247,13 +255,14 @@ void removeEntry(FILE* fp, char* month)
 					{
 						fscanf(fp, "%s", buff);
 						fscanf(fp, "%s", buff);
+						fscanf(fp, "%s", buff);
 						curpos = ftell(fp) + 1;
 					}
 
 					fscanf(fp, "%s", buff);
 					length = strlen(buff);
 					fscanf(fp, "%s", buff);
-					length += strlen(buff) + 1;
+					length += strlen(buff) + 3;
 
 					fseek(fp, curpos, SEEK_SET);
 
