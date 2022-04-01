@@ -7,6 +7,7 @@
 void balance(FILE* fp, char* buff)
 {
 	int date = 1;
+	int entry = 0;
 	double balance = 0;
 
 	while (fscanf(fp, "%s", buff) != EOF)
@@ -14,10 +15,15 @@ void balance(FILE* fp, char* buff)
 		if (date)
 		{
 			date = 0;
+			entry = 1;
+		}
+		else if (entry)
+		{
+			balance += atof(buff);
+			entry = 0;
 		}
 		else
 		{
-			balance += atof(buff);
 			date = 1;
 		}
 	}
@@ -36,7 +42,7 @@ void balance(FILE* fp, char* buff)
 	return;
 }
 
-void inputToday(char* fileName, int day, int expense)
+void inputToday(char* fileName, int day, int expense, int marker)
 {	char userInput[255];
 
 	if (expense)
@@ -54,7 +60,7 @@ void inputToday(char* fileName, int day, int expense)
 	 else
 		fragment = atof(userInput);
 
-	fprintf(fw, "%d %.2f\n", day, fragment);
+	fprintf(fw, "%d %.2f %d\n", day, fragment, marker);
 
 	if (expense)
 		printf("You have successfully entered $%.2f as an expense for today\n\n", -1 * fragment);
@@ -64,7 +70,7 @@ void inputToday(char* fileName, int day, int expense)
 	fclose(fw);
 }
 
-void inputSelectDay(char* fileName, char* month, int year, int expense)
+void inputSelectDay(char* fileName, char* month, int year, int expense, int marker)
 {
 	char userInput[255];
 	int check = 0;
@@ -98,7 +104,7 @@ void inputSelectDay(char* fileName, char* month, int year, int expense)
 	else
 		fragment = atof(userInput);
 
-	fprintf(fw, "%d %.2f\n", selectedDay, fragment);
+	fprintf(fw, "%d %.2f %d\n", selectedDay, fragment, marker);
 
 	if (expense)
 		printf("You have successfully entered $%.2f as an expense for %s %d %d\n\n", -1 * fragment, month, selectedDay, year);
@@ -123,7 +129,8 @@ void print(FILE* fp, char* month, int extra)
 		fscanf(fp, "%s", buff);
 		double entry = atof(buff);
 
-		balanceEntry[date - 1][balanceLength[date - 1]++] = entry;		
+		balanceEntry[date - 1][balanceLength[date - 1]++] = entry;	
+		fscanf(fp, "%s", buff);	
 	}
 
 	printf("\n%s\t\tIncome\t\tExpenses\n", month);
@@ -193,6 +200,7 @@ void removeEntry(FILE* fp, char* month)
 
 		balanceEntry[date - 1][balanceLength[date - 1]] = entry;
 		balancePosition[date - 1][balanceLength[date - 1]++] = pos++;
+		fscanf(fp, "%s", buff);
 	}
 	rewind(fp);
 
@@ -247,13 +255,14 @@ void removeEntry(FILE* fp, char* month)
 					{
 						fscanf(fp, "%s", buff);
 						fscanf(fp, "%s", buff);
+						fscanf(fp, "%s", buff);
 						curpos = ftell(fp) + 1;
 					}
 
 					fscanf(fp, "%s", buff);
 					length = strlen(buff);
 					fscanf(fp, "%s", buff);
-					length += strlen(buff) + 1;
+					length += strlen(buff) + 3;
 
 					fseek(fp, curpos, SEEK_SET);
 
@@ -279,4 +288,115 @@ void removeEntry(FILE* fp, char* month)
 	
 	rewind(fp);
 	printf("\n");
+}
+
+void setWeeklyExpense()
+{
+	char userInput[255];
+	char fileName[14] = "Data/Settings";
+	int check = 0;
+	double weeklyExpense;
+
+	while (!check)
+	{
+		printf("\nPlease enter the amount per week you would like to spend: ");
+
+		if (getUserInput(userInput)) return;
+
+		weeklyExpense = atof(userInput);
+		
+		if (weeklyExpense < 0)
+		{
+			printf("Please enter a valid amount.\n");
+		}
+		else
+		{
+			check = 1;
+		}
+	}
+
+	FILE *fp = fopen(fileName, "r");
+
+	if (fp != NULL)
+	{
+		fclose(fp);
+		remove(fileName);
+	}
+
+	fp = fopen(fileName, "w");
+	fprintf(fp, "%.2f", weeklyExpense);
+
+	printf("Successfully set $%.2f as weekly expenditure amount.\n\n", weeklyExpense);
+
+	fclose(fp);
+}
+
+void balanceWeekly(FILE* fp, char* buff, int today)
+{
+	int date = 1;
+	int entry = 0;
+	int day = today;
+	
+	char fileName[14] = "Data/Settings";
+	char weeklyExpenseString[5] = "";
+	double weeklyExpense = 0;
+
+	FILE *settings = fopen(fileName, "r");
+
+	if (settings == NULL)
+	{
+		printf("\nYou must set the amount you wish to spend per week before using this command. \n\n");
+		return;
+	}
+
+	fscanf(settings, "%s", weeklyExpenseString);
+	weeklyExpense = atof(weeklyExpenseString);
+
+	double balance = weeklyExpense;
+
+	while (day - 1 >= 7)
+	{
+		if (day < 25)
+		{
+			balance += weeklyExpense;
+		}
+
+		day -= 7;
+	}
+
+	double potentialEntry = 0;
+
+	while (fscanf(fp, "%s", buff) != EOF)
+	{
+		if (date)
+		{
+			date = 0;
+			entry = 1;
+		}
+		else if (entry)
+		{
+			potentialEntry = atof(buff);
+			entry = 0;
+		}
+		else
+		{
+			if (!atoi(buff) && potentialEntry < 0)
+			{
+				balance += potentialEntry;
+			}
+			
+			date = 1;
+		}
+	}
+
+	if (balance >= 0)
+	{
+		printf("\nYour current balance with your weekly expenditures for this month is: $%.2f\n\n", balance);
+	}
+	else
+	{
+		printf("\nYour current balance with your weekly expenditures for this month is: -$%.2f\n\n", -1 * balance);
+	}
+
+	rewind(fp);
 }

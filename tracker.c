@@ -72,19 +72,27 @@ int main()
 		}
 		else if (strcmp(userInput, "input expense\n") == 0)
 		{
-			inputToday(fileName, today, 1);
+			inputToday(fileName, today, 1, 0);
 		}
 		else if (strcmp(userInput, "input income\n") == 0)
 		{
-			inputToday(fileName, today, 0);
+			inputToday(fileName, today, 0, 0);
 		}
 		else if (strcmp(userInput, "input expense select day\n") == 0)
 		{
-			inputSelectDay(fileName, month, year, 1);
+			inputSelectDay(fileName, month, year, 1, 0);
 		}
 		else if (strcmp(userInput, "input income select day\n") == 0)
 		{
-			inputSelectDay(fileName, month, year, 0);
+			inputSelectDay(fileName, month, year, 0, 0);
+		}
+		else if (strcmp(userInput, "input expense monthly\n") == 0)
+		{
+			inputToday(fileName, today, 1, 1);
+		}
+		else if (strcmp(userInput, "input expense select day monthly\n") == 0)
+		{
+			inputSelectDay(fileName, month, year, 1, 1);
 		}
 		else if (strcmp(userInput, "print\n") == 0)
 		{
@@ -93,6 +101,14 @@ int main()
 		else if (strcmp(userInput, "delete\n") == 0)
 		{
 			removeEntry(fp, month);
+		}
+		else if (strcmp(userInput, "set weekly expense\n") == 0)
+		{
+			setWeeklyExpense();
+		}
+		else if (strcmp(userInput, "balance weekly\n") == 0)
+		{
+			balanceWeekly(fp, buff, today);
 		}
 		else
 		{
