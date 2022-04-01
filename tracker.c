@@ -86,6 +86,14 @@ int main()
 		{
 			inputSelectDay(fileName, month, year, 0, 0);
 		}
+		else if (strcmp(userInput, "input expense monthly\n") == 0)
+		{
+			inputToday(fileName, today, 1, 1);
+		}
+		else if (strcmp(userInput, "input expense select day monthly\n") == 0)
+		{
+			inputSelectDay(fileName, month, year, 1, 1);
+		}
 		else if (strcmp(userInput, "print\n") == 0)
 		{
 			print(fp, month, 1);
