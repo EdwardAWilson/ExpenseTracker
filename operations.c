@@ -356,7 +356,7 @@ void balanceWeekly(FILE* fp, char* buff, int today)
 
 	while (day - 1 >= 7)
 	{
-		if (day < 25)
+		if (day < 29)
 		{
 			balance += weeklyExpense;
 		}
