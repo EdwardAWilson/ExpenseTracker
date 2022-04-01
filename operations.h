@@ -7,5 +7,6 @@ void inputToday(char*, int, int, int);
 void inputSelectDay(char*, char*, int, int, int);
 void print(FILE*, char*, int);
 void removeEntry(FILE*, char*);
+void setWeeklyExpense();
 
 #endif

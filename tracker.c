@@ -102,6 +102,10 @@ int main()
 		{
 			removeEntry(fp, month);
 		}
+		else if (strcmp(userInput, "set weekly expense\n") == 0)
+		{
+			setWeeklyExpense();
+		}
 		else
 		{
 			printf("\nPlease enter a valid command.\n\n");

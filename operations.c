@@ -289,3 +289,44 @@ void removeEntry(FILE* fp, char* month)
 	rewind(fp);
 	printf("\n");
 }
+
+void setWeeklyExpense()
+{
+	char userInput[255];
+	char fileName[14] = "Data/Settings";
+	int check = 0;
+	double weeklyExpense;
+
+	while (!check)
+	{
+		printf("\nPlease enter the amount per week you would like to spend: ");
+
+		if (getUserInput(userInput)) return;
+
+		weeklyExpense = atof(userInput);
+		
+		if (weeklyExpense < 0)
+		{
+			printf("Please enter a valid amount.\n");
+		}
+		else
+		{
+			check = 1;
+		}
+	}
+
+	FILE *fp = fopen(fileName, "r");
+
+	if (fp != NULL)
+	{
+		fclose(fp);
+		remove(fileName);
+	}
+
+	fp = fopen(fileName, "w");
+	fprintf(fp, "%.2f", weeklyExpense);
+
+	printf("Successfully set $%.2f as weekly expenditure amount.\n\n", weeklyExpense);
+
+	fclose(fp);
+}
